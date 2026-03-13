@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MS Dev - Professional Invoice Generator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div>
+        <h1>MS Dev Invoice Generator</h1>
+        <p>Create professional invoice and download A4 PDF</p>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="themeToggle" class="btn btn-outline">Dark Mode</button>
+        <button id="downloadPdf" class="btn btn-primary">Download PDF</button>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <!-- Left Form -->
+      <section class="card form-card">
+        <h2>Invoice Form</h2>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Invoice No</label>
+            <input type="text" id="invoiceNumber" value="INV-1001" />
+          </div>
+          <div class="field">
+            <label>Currency</label>
+            <select id="currency">
+              <option value="BDT">BDT (৳)</option>
+              <option value="USD">USD ($)</option>
+              <option value="AUD">AUD (A$)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="EUR">EUR (€)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Invoice Date</label>
+            <input type="date" id="invoiceDate" />
+          </div>
+          <div class="field">
+            <label>Due Date</label>
+            <input type="date" id="dueDate" />
+          </div>
+        </div>
+
+        <h3>From / Seller</h3>
+        <div class="field">
+          <label>Business Name</label>
+          <input type="text" id="fromName" value="MS Dev" />
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="fromEmail" value="hello@msdev.com" />
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="text" id="fromPhone" value="+8801XXXXXXXXX" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Address</label>
+          <textarea id="fromAddress" rows="3">Natore, Bangladesh</textarea>
+        </div>
+
+        <h3>Bill To / Client</h3>
+        <div class="field">
+          <label>Client Name</label>
+          <input type="text" id="clientName" placeholder="Client Name" />
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="clientEmail" placeholder="client@email.com" />
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="text" id="clientPhone" placeholder="+1234567890" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Address</label>
+          <textarea id="clientAddress" rows="3" placeholder="Client address"></textarea>
+        </div>
+
+        <div class="items-header">
+          <h3>Products / Services</h3>
+          <button type="button" id="addItemBtn" class="btn btn-outline">+ Add Item</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="grid-3">
+          <div class="field">
+            <label>Tax (%)</label>
+            <input type="number" id="tax" value="0" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Discount</label>
+            <input type="number" id="discount" value="0" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Extra / Shipping</label>
+            <input type="number" id="shipping" value="0" min="0" step="0.01" />
+          </div>
+        </div>
+
+        <h3>Payment Details</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>Payment Method</label>
+            <input type="text" id="paymentMethod" placeholder="Bank Transfer / Cash / PayPal / Mobile Banking" />
+          </div>
+          <div class="field">
+            <label>Bank / Wallet Name</label>
+            <input type="text" id="bankName" placeholder="Bank name / wallet name" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Bank / Payment Info</label>
+          <textarea
+            id="bankDetails"
+            rows="4"
+            placeholder="Account Name, Account Number, IBAN, Swift, Wallet, Payment Number etc."
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label>Note</label>
+          <textarea
+            id="note"
+            rows="4"
+            placeholder="Thank you for your business."
+          ></textarea>
+        </div>
+      </section>
+
+      <!-- Right Preview -->
+      <section class="card preview-card">
+        <h2>Live Preview</h2>
+
+        <div id="invoicePreview" class="invoice-paper">
+          <div class="invoice-head">
+            <div>
+              <div class="brand">MS Dev</div>
+              <p class="subtitle">Professional Invoice</p>
+            </div>
+
+            <div class="meta">
+              <p><strong>Invoice:</strong> <span id="pInvoiceNumber">INV-1001</span></p>
+              <p><strong>Date:</strong> <span id="pInvoiceDate">-</span></p>
+              <p><strong>Due Date:</strong> <span id="pDueDate">-</span></p>
+              <p><strong>Currency:</strong> <span id="pCurrency">BDT</span></p>
+            </div>
+          </div>
+
+          <div class="address-grid">
+            <div class="info-box">
+              <h4>From</h4>
+              <p id="pFromName">MS Dev</p>
+              <p id="pFromEmail">hello@msdev.com</p>
+              <p id="pFromPhone">+8801XXXXXXXXX</p>
+              <p id="pFromAddress">Natore, Bangladesh</p>
+            </div>
+
+            <div class="info-box">
+              <h4>Bill To</h4>
+              <p id="pClientName">Client Name</p>
+              <p id="pClientEmail">client@email.com</p>
+              <p id="pClientPhone">+1234567890</p>
+              <p id="pClientAddress">Client address</p>
+            </div>
+          </div>
+
+          <table class="preview-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="previewItemsBody"></tbody>
+          </table>
+
+          <div class="bottom-grid">
+            <div class="left-notes">
+              <div class="info-box">
+                <h4>Payment Method</h4>
+                <p id="pPaymentMethod">-</p>
+              </div>
+
+              <div class="info-box">
+                <h4>Bank / Payment Details</h4>
+                <p id="pBankName">-</p>
+                <p id="pBankDetails">-</p>
+              </div>
+
+              <div class="info-box">
+                <h4>Note</h4>
+                <p id="pNote">Thank you for your business.</p>
+              </div>
+            </div>
+
+            <div class="summary-box">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="pSubtotal">৳0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Tax</span>
+                <span id="pTax">৳0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Discount</span>
+                <span id="pDiscount">৳0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Extra</span>
+                <span id="pShipping">৳0.00</span>
+              </div>
+              <div class="summary-row total-row">
+                <span>Total</span>
+                <span id="pGrandTotal">৳0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
